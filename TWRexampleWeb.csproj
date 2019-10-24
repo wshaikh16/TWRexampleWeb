@@ -4,8 +4,8 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
-
   <ItemGroup>
+    <None Include="wwwroot\img\smiley.gif" />
   </ItemGroup>
 
 </Project>
