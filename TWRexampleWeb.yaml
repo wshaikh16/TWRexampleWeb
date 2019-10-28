@@ -1,0 +1,27 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: twr-example-web-manual-push
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: twr-example-web-manual-push
+    spec:
+      containers:
+      - name: twr-example-web-manual-push
+        image: twrexamplewebcr.azurecr.io/aspnetapp:v1
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: twr-example-web-manual-push
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: twr-example-web-manual-push
