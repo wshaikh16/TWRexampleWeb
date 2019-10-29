@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
       - name: twr-example-web-manual-push
-        image: twrexamplewebcr.azurecr.io/aspnetapp:v1
+        image: twrexamplewebcr.azurecr.io/twrexample
         ports:
         - containerPort: 80
 ---
@@ -20,6 +20,7 @@ kind: Service
 metadata:
   name: twr-example-web-manual-push
 spec:
+  loadBalancerIP: 52.171.62.190
   type: LoadBalancer
   ports:
   - port: 80
