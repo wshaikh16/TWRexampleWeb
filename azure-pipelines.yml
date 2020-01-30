@@ -46,7 +46,7 @@ stages:
         dockerfile: '**/Dockerfile'
         tags: |
           $(tag)
-          
+
     - task: Docker@2
       displayName: Push image step
       inputs:
