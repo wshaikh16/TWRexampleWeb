@@ -57,6 +57,6 @@ stages:
         dockerfile: '**/Dockerfile'
         tags: |
           $(tag)
-        arguments: '--disable-content-trust=true'
+        arguments: '--disable-content-trust=false'
       env:
         DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE: $(DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE)
