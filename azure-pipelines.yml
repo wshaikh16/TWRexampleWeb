@@ -9,8 +9,8 @@ resources:
 - repo: self
 
 variables:
-  containerRegistryServiceConnection: acrnp502
-  imageRepository: testweb1
+  containerRegistryServiceConnection: s00502nacrc3po
+  imageRepository: demoacr5
   tag: '$(Build.BuildId)'
 
 stages:
