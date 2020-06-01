@@ -1,0 +1,60 @@
+# Docker
+# Build and push an image to Azure Container Registry
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- master
+
+resources:
+- repo: self
+
+variables:
+  containerRegistryServiceConnection: acrnp502
+  imageRepository: testweb1
+  tag: '$(Build.BuildId)'
+
+stages:
+- stage: Build
+  displayName: Build image
+
+  jobs:  
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: 'ubuntu-latest'
+
+    steps:
+    - task: Docker@2
+      inputs:
+        containerRegistry: $(containerRegistryServiceConnection)
+        command: 'login'
+
+    - task: DownloadSecureFile@1
+      name: privateKey
+      inputs:
+        secureFile: cc5418cd8ae2c2306d6792b8fa1f5c846f443402be11a1df65890788335a4909.key
+    - script: |
+        mkdir -p $(DOCKER_CONFIG)/trust/private
+        cp $(privateKey.secureFilePath) $(DOCKER_CONFIG)/trust/private
+      
+    - task: Docker@2
+      displayName: Build image step
+      inputs:
+        containerRegistry: $(containerRegistryServiceConnection)
+        repository: $(imageRepository)
+        command: build
+        dockerfile: '**/Dockerfile'
+        tags: |
+          $(tag)
+    - task: Docker@2
+      displayName: Push image step
+      inputs:
+        containerRegistry: $(containerRegistryServiceConnection)
+        repository: $(imageRepository)
+        command: push
+        dockerfile: '**/Dockerfile'
+        tags: |
+          $(tag)
+        arguments: '--disable-content-trust=false'
+      env:
+        DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE: $(DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE)
