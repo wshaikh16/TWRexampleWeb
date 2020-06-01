@@ -9,7 +9,7 @@ resources:
 - repo: self
 
 variables:
-  containerRegistryServiceConnection: s00502nacrc3po
+  containerRegistryServiceConnection: acr502
   imageRepository: demoacr5
   tag: '$(Build.BuildId)'
 
