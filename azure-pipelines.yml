@@ -28,14 +28,6 @@ stages:
       inputs:
         containerRegistry: $(containerRegistryServiceConnection)
         command: 'login'
-
-    - task: DownloadSecureFile@1
-      name: privateKey
-      inputs:
-        secureFile: cc5418cd8ae2c2306d6792b8fa1f5c846f443402be11a1df65890788335a4909.key
-    - script: |
-        mkdir -p $(DOCKER_CONFIG)/trust/private
-        cp $(privateKey.secureFilePath) $(DOCKER_CONFIG)/trust/private
       
     - task: Docker@2
       displayName: Build image step
@@ -55,6 +47,3 @@ stages:
         dockerfile: '**/Dockerfile'
         tags: |
           $(tag)
-        arguments: '--disable-content-trust=false'
-      env:
-        DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE: $(DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE)
