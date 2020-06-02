@@ -13,5 +13,4 @@ RUN dotnet publish -c Release -o out
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app
 COPY --from=build-env /app/out .
-RUN apt-get update && apt-get install strace
-ENTRYPOINT [ "strace", "-e", "trace=open,close,write", "-y", "dotnet", "TWRexampleWeb.dll" ]
+ENTRYPOINT ["dotnet", "TWRexampleWeb.dll" ]
