@@ -9,6 +9,9 @@ RUN dotnet restore
 COPY . ./
 RUN dotnet publish -c Release -o out
 
+# Make sure the app binds to port 8080
+ENV ASPNETCORE_URLS http://*:8080
+
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app
