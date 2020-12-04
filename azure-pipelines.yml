@@ -21,7 +21,7 @@ stages:
   - job: Build
     displayName: Build
     pool:
-      name: C3PO-Ubuntu
+      name: Default
 
     steps:
     - task: Docker@2
