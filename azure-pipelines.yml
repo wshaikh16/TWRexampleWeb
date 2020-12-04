@@ -21,7 +21,7 @@ stages:
   - job: Build
     displayName: Build
     pool:
-      vmImage: 'ubuntu-latest'
+      name: C3PO-Ubuntu
 
     steps:
     - task: Docker@2
