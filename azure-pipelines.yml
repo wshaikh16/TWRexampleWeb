@@ -39,7 +39,8 @@ stages:
         dockerfile: '**/Dockerfile'
         tags: |
           $(tag)
-    
+
+    extends:
     - template: aquasec-container-scan.yml@templates
       parameters:
         registryServiceConnection: $(containerRegistryServiceConnection)
