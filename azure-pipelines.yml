@@ -6,12 +6,18 @@ trigger:
 - master
 
 resources:
-- repo: self
+  repositories:
+  - repository: self
+  - repository: templates
+    type: githubenterprise
+    name: ashaikh/azure-devops-template
+    endpoint: GHE
 
 variables:
   containerRegistryServiceConnection: NewNP502
   imageRepository: twrexampleweb
   tag: '$(Build.BuildId)'
+  aquaServiceConnection: aquasec 
 
 stages:
 - stage: Build
@@ -23,12 +29,7 @@ stages:
     pool:
       name: C3PO-Linux
 
-    steps:
-    - task: Docker@2
-      inputs:
-        containerRegistry: $(containerRegistryServiceConnection)
-        command: 'login'
-      
+    steps:      
     - task: Docker@2
       displayName: Build image step
       inputs:
@@ -38,17 +39,15 @@ stages:
         dockerfile: '**/Dockerfile'
         tags: |
           $(tag)
-
-    - task: aquasecScanner@4
-      displayName: Image Scanning
-      inputs:
-        image: s00502nacrc3po.azurecr.io/$(imageRepository):$(tag)
-        scanner: s00502nacrc3po.azurecr.io/dp-core/aqua/scanner:5.3.20314
-        registry: $(containerRegistryServiceConnection)
-        connection: 'aquasec'
-        caCertificates: true
-
-
+    
+    - template: aquasec-container-scan.yml@templates
+      parameters:
+        registryServiceConnection: $(containerRegistryServiceConnection)
+        aquaServiceConnection: $(aquaServiceConnection)
+        containerName: 'customerengagement/recommendedproducts/recommendedproductsapi/dev'
+        registryUrl: 's00502nacrc3po.azurecr.io'
+        buildId: $(tag)
+    
     - task: Docker@2
       displayName: Push image step
       inputs:
