@@ -42,7 +42,7 @@ stages:
     - task: aquasecScanner@4
       displayName: Image Scanning
       inputs:
-        image: $(containerRegistryServiceConnection)/$(imageRepository):$(tag)
+        image: s00502nacrc3po.azurecr.io/$(imageRepository):$(tag)
         scanner: s00502nacrc3po.azurecr.io/dp-core/aqua/scanner:5.3.20314
         registry: $(containerRegistryServiceConnection)
         connection: 'aquasec'
