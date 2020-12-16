@@ -38,6 +38,17 @@ stages:
         dockerfile: '**/Dockerfile'
         tags: |
           $(tag)
+
+    - task: aquasecScanner@4
+      displayName: Image Scanning
+      inputs:
+        image: $(containerRegistryServiceConnection)/$(imageRepository):$(tag)
+        scanner: s00502nacrc3po.azurecr.io/dp-core/aqua/scanner:5.3.20314
+        registry: $(containerRegistryServiceConnection)
+        connection: 'aquasec'
+        caCertificates: true
+
+
     - task: Docker@2
       displayName: Push image step
       inputs:
